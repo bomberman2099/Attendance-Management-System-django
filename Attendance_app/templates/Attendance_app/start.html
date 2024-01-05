@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance System</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/css1.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Attendance System</h1>
+
+        <p>Working hours: <span id="working-hours">0</span> hours</p>
+        <form method="POST">
+            {% csrf_token %}
+
+            <button class="exit-button"><a href="{% url 'home:result' pk %}" type="button" >end</a></button>
+
+        </form>
+    </div>
+</body>
+</html>
