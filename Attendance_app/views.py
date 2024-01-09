@@ -19,7 +19,7 @@ class AttendanceListView(CustomizedRquirementLogin, ListView):
 
 def CreateAttendanceView(request):
     if request.user.is_anonymous:
-        return reverse("user:login")
+        return redirect(reverse("user:login"))
     return render(request, 'Attendance_app/index.html')
 
 

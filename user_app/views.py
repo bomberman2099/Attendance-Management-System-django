@@ -7,7 +7,7 @@ from django.urls import reverse
 
 def UserRegisterView(request):
     if request.user.is_authenticated:
-        redirect(reverse("home:home"))
+        return redirect(reverse("home:home"))
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -27,7 +27,7 @@ def UserRegisterView(request):
 
 def UserLoginView(request):
     if request.user.is_authenticated:
-        redirect(reverse("home:home"))
+        return redirect(reverse("home:home"))
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -38,7 +38,6 @@ def UserLoginView(request):
                 login(request, user)
                 form.save()
                 return redirect(reverse('home:home'))
-
     else:
         form = UserLoginForm()
     return render(request, 'user_app/UserLogin.html', {'form': form})
