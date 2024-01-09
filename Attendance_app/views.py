@@ -31,15 +31,18 @@ def startAttendanceView(request):
     date = datetime.now().date()
     try:
         at = AttendanceUser.objects.get(user=request.user, end=None)
+        print("at = AttendanceUser.objects.get(user=request.user, end=None)")
         return render(request, 'Attendance_app/start.html', {'started': at.start, 'pk': at.id})
     except AttendanceUser.DoesNotExist:
         try:
+            print("at = AttendanceUser.objects.get(user=request.user, created_date=date)")
             at = AttendanceUser.objects.get(user=request.user, created_date=date)
             at.start = start
             at.end = None
             at.save()
             return render(request, 'Attendance_app/start.html', {'started': start, 'pk': at.id})
         except AttendanceUser.DoesNotExist:
+            print("at = AttendanceUser.objects.create(user=request.user, created_date=date, start=start,)")
             at = AttendanceUser.objects.create(user=request.user, created_date=date, start=start,)
             at.end = None
             at.save()
@@ -58,10 +61,9 @@ def resultView(request, id):
     attend.end = end
 
     job_time = datetime.combine(datetime.min, attend.end) - datetime.combine(datetime.min, attend.start)
-    attend.job_time = job_time
-
+    attend.job_time += job_time
     attend.save()
-    attend.end = None
+
 
     end_datetime = datetime.combine(datetime.today(), end)
     start_datetime = datetime.combine(datetime.today(), attend.start)
