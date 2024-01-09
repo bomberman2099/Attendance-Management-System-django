@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance System</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/css1.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Attendance System</h1>
+        <form method="POST">
+            {% csrf_token %}
+<<<<<<< HEAD
+
+=======
+>>>>>>> 15a2cd7 (update Attendance logic and fix some bugs)
+            <button><a href="{% url 'home:start'  %}" type="button">start</a></button>
+
+        </form>
+    </div>
+</body>
+</html>
