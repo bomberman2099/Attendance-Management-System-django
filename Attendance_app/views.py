@@ -1,23 +1,12 @@
-from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from django.views import View
 from django.urls import reverse
-<<<<<<< HEAD
-=======
-from django.views.generic import TemplateView
-
->>>>>>> 15a2cd7 (update Attendance logic and fix some bugs)
-from . import models
 from datetime import datetime, timezone, timedelta
 from django.views.generic.list import ListView
 from .models import AttendanceUser
 from .mixin import CustomizedRquirementLogin
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 15a2cd7 (update Attendance logic and fix some bugs)
 class AttendanceListView(CustomizedRquirementLogin, ListView):
     model = AttendanceUser
     paginate_by = 30
@@ -26,39 +15,18 @@ class AttendanceListView(CustomizedRquirementLogin, ListView):
         context = super().get_context_data(**kwargs)
         context["object"] = AttendanceUser.objects.filter(user=self.request.user)
         return context
-<<<<<<< HEAD
-def CreateAttendanceView(request):
-    if not request.user.is_authenticated:
-        return reverse("user:login")
-
-    return render(request, 'Attendance_app/index.html', {})
-=======
 
 
 def CreateAttendanceView(request):
     if request.user.is_anonymous:
         return reverse("user:login")
     return render(request, 'Attendance_app/index.html')
->>>>>>> 15a2cd7 (update Attendance logic and fix some bugs)
 
 
 def startAttendanceView(request):
     if not request.user.is_authenticated:
         return reverse("user:login")
 
-<<<<<<< HEAD
-    start = datetime.now()
-    date = datetime.now().date()
-    try:
-        at = AttendanceUser.objects.get(user=request.user, created_date=date,)
-        at.start = start
-        at.save()
-        return render(request, 'Attendance_app/start.html', {'started': start, 'pk': at.id})
-    except ObjectDoesNotExist:
-        at = AttendanceUser.objects.create(user=request.user, created_date=date, start=start)
-        return render(request, 'Attendance_app/start.html', {'started': start, 'pk': at.id})
-
-=======
     start = datetime.now().time()
     date = datetime.now().date()
     try:
@@ -76,7 +44,7 @@ def startAttendanceView(request):
             at.end = None
             at.save()
             return render(request, 'Attendance_app/start.html', {'started': start, 'pk': at.id})
->>>>>>> 15a2cd7 (update Attendance logic and fix some bugs)
+
 
 
 def resultView(request, id):
@@ -84,26 +52,6 @@ def resultView(request, id):
         return reverse("user:login")
 
     attend = get_object_or_404(AttendanceUser, user=request.user, id=id)
-<<<<<<< HEAD
-    attend.save()
-    # print(attend.end, attend.start)
-    job_time = datetime.combine(datetime.min, attend.end) - datetime.combine(datetime.min, attend.start)
-    hours = job_time.seconds // 3600
-    minutes = (job_time.seconds // 60) % 60
-    seconds = job_time.seconds % 60
-
-    if attend.job_time:
-        existing_job_time = datetime.strptime(str(attend.job_time), "%H:%M:%S")
-        total_job_time = existing_job_time + timedelta(hours=hours, minutes=minutes, seconds=seconds)
-        attend.job_time = total_job_time.strftime("%H:%M:%S")
-    else:
-        attend.job_time = f"{hours}:{minutes:02d}:{seconds:02d}"
-
-    attend.user = request.user
-    attend.save()
-    # print(attend.end, attend.start)
-    return render(request, 'Attendance_app/result.html', {'attend': attend})
-=======
     if attend.end is not None:
         return redirect("home:result_list")
     end = datetime.now().time()
@@ -124,5 +72,4 @@ def resultView(request, id):
 
     return render(request, 'Attendance_app/result.html', {'attend': attend, "end": end, "start": start})
 
->>>>>>> 15a2cd7 (update Attendance logic and fix some bugs)
 
